@@ -15,18 +15,18 @@ export default function ContactList(props) {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            marginTop: Constants.statusBarHeight,
             marginHorizontal: 12
         },
         sectionHeader: {
             fontSize: 24,
             opacity: .3,
-            marginTop: 15
+            marginTop: 15,
         },
         header: {
             display: 'flex',
             flexDirection: 'row-reverse',
-            margin: 10
+            marginTop: 15,
+            marginRight: 15,
         }
     });
     
@@ -61,6 +61,7 @@ export default function ContactList(props) {
 
     function addContact() {
         console.log('Add Contact')
+        props.navigation.navigate('ContactInfo', { title: "Add User" })
     }
 
     return (
