@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import {
+    View,
     StyleSheet,
     Text,
     SafeAreaView,
-    SectionList,
 	TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
 import ContactListItem from '../components/ContactListItem'
-
+import AlphaSidebar from './../libs/alpha-sidebar'
+import { AntDesign } from '@expo/vector-icons';
 
 export default function ContactList(props) {
     const styles = StyleSheet.create({
@@ -17,35 +18,58 @@ export default function ContactList(props) {
             marginTop: Constants.statusBarHeight,
             marginHorizontal: 12
         },
-        header: {
+        sectionHeader: {
             fontSize: 24,
             opacity: .3,
             marginTop: 15
+        },
+        header: {
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            margin: 10
         }
     });
-
+    
     const [ expandedId, setExpanded ] = useState(null);
         
     const toggleItemActions = (id) => {
         setExpanded(expandedId === id ? null : id)
     }
 
+    const Item = ({ item }) => (
+        <TouchableOpacity onPress={() => toggleItemActions(item.id)}>
+            <ContactListItem 
+                contact={item} 
+                expandedId={expandedId}
+            />
+        </TouchableOpacity>
+    )
+    
+    const Header = () => {
+        return (
+            <View style={styles.header}>
+                <TouchableOpacity onPress={addContact}>
+                    <AntDesign name="plus" size={24} color="black" />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+    
+    const SectionHeader = ({ section: { title } }) => (
+        <Text style={styles.sectionHeader}>{title}</Text>
+    )
+
+    function addContact() {
+        console.log('Add Contact')
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <SectionList
-                sections={props.contacts}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => toggleItemActions(item.id)}>
-                        <ContactListItem 
-                            contact={item} 
-                            expandedId={expandedId}
-                        />
-			        </TouchableOpacity>
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
+            <AlphaSidebar
+                data={props.contacts}
+                renderItem={Item}
+                renderHeader={Header}
+                renderSectionHeader={SectionHeader}
             />
         </SafeAreaView>
     )
