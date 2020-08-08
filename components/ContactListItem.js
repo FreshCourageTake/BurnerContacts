@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	StyleSheet,
 	Text,
 	View,
 	TouchableOpacity,
-	Button
 } from "react-native";
 import { 
 	Feather,
@@ -47,9 +46,7 @@ async function sendEmail(emails) {
 	}
 }
 
-export default function ContactListItem ({ contact }) {
-	const [ expanded, setExpanded ] = useState(null);
-	
+export default function ContactListItem ({ contact, expandedId }) {
 	const styles = StyleSheet.create({
 		contact: {
 			backgroundColor: "white",
@@ -74,10 +71,8 @@ export default function ContactListItem ({ contact }) {
 	
 	return (
 		<View style={styles.contact}>
-			<TouchableOpacity onPress={() => setExpanded(!expanded)}>
-				<Text>{contact.name}</Text>
-			</TouchableOpacity>
-			{expanded &&
+			<Text>{contact.name}</Text>
+			{expandedId === contact.id &&
 				<View style={styles.actions}>
 					{contact.phoneNumbers &&
 						<TouchableOpacity 
